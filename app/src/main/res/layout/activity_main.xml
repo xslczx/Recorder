@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/tv_time"
+        android:textSize="20sp"
+        android:layout_gravity="center_horizontal"
+        android:paddingVertical="10dp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:text="00:00:000"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:paddingVertical="10dp"
+        android:text="STOPPED"
+        android:gravity="center"
+        android:textSize="12sp"
+        android:id="@+id/tv_record_state"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"/>
+
+
+    <com.xslczx.recorder.PcmWaveformView
+        android:id="@+id/visualizer"
+        android:layout_width="match_parent"
+        android:layout_height="140dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:text="开始录音"
+            android:id="@+id/btn_record"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <CheckBox
+            android:id="@+id/checkbox"
+            android:text="内录模式"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+
+
+    <Button
+        android:text="暂停录音"
+        android:id="@+id/btn_pause"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <Button
+        android:text="继续录音"
+        android:id="@+id/btn_resume"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <Button
+        android:text="停止录音"
+        android:id="@+id/btn_stop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+</LinearLayout>

@@ -106,7 +106,7 @@ class RecordThread(
                     } else {
                         val result = pcmReader.read()
                         val buffer = result.byteArray
-                        recorderListener.onPcmData(buffer, result.shortArray, result.bytesRead)
+                        recorderListener.onPcmData(buffer.copyOf(result.bytesRead), result.bytesRead)
                         recorderListener.onEncodeDuration(result.durationMillis)
                         if (buffer.isNotEmpty()) {
                             encoder.encode(buffer)

@@ -7,5 +7,5 @@ interface OnAudioRecordListener {
     fun onFailure(ex: Exception)
     fun onStream(chunk: ByteArray)
     fun onEncodeDuration(durationMs: Long)
-    fun onPcmData(byteArray: ByteArray, shortArray: ShortArray, bytesRead: Int)
+    fun onPcmData(byteArray: ByteArray, bytesRead: Int)
 }

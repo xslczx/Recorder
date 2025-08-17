@@ -126,41 +126,10 @@ class MainActivity : AppCompatActivity(),
     override fun sendStreamChunkEvent(buffer: ByteArray) {
     }
 
-    override fun sendPcmEvent(byteArray: ByteArray, shortArray: ShortArray, bytesRead: Int) {
+    override fun sendPcmEvent(byteArray: ByteArray, bytesRead: Int) {
         if (bytesRead > 0) {
-            val fft = fftFactory.makeFftData(byteArray)
-
-            val model = FloatArray(fft.size / 2 + 1)
-            model[0] = abs(fft[1].toInt()).toFloat()
-
-            var j = 1
-            var i = 2
-            while (i < fft.size / 2) {
-                model[j] = kotlin.math.hypot(fft[i].toDouble(), fft[i + 1].toDouble()).toFloat()
-                i += 2
-                j++
-                model[j] = abs(fft[j].toInt()).toFloat()
-            }
-            val amplitude = getAmplitude(byteArray, bytesRead)
             binding.visualizer.addAmplitudesFromPcm(byteArray, 2)
         }
-    }
-
-    // Assuming the input is signed int 16
-    private fun getAmplitude(chunk: ByteArray, size: Int): Double {
-        var max = -160
-
-        val buf = ShortArray(size / 2)
-        ByteBuffer.wrap(chunk, 0, size).order(ByteOrder.LITTLE_ENDIAN).asShortBuffer()[buf]
-
-        for (b in buf) {
-            val curSample = abs(b.toInt())
-            if (curSample > max) {
-                max = curSample
-            }
-        }
-
-        return 20 * log10(max / 32767.0) // 16 signed bits 2^15 - 1
     }
 
     var lastTime = 0L

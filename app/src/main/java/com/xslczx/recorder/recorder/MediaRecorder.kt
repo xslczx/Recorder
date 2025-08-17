@@ -9,7 +9,7 @@ import androidx.annotation.RequiresApi
 import com.xslczx.recorder.Utils
 import com.xslczx.recorder.encoder.AudioEncoder
 import java.io.IOException
-import kotlin.math.log10
+import kotlin.math.ln
 
 @SuppressLint("ObsoleteSdkInt")
 class MediaRecorder(
@@ -23,7 +23,6 @@ class MediaRecorder(
     private var mIsRecording = false
     private var mIsPaused = false
     private var mRecorder: MediaRecorder? = null
-    private var mMaxAmplitude = -160.0
     private var mConfig: RecordConfig? = null
 
     @Throws(Exception::class)
@@ -89,18 +88,19 @@ class MediaRecorder(
     override val isPaused: Boolean
         get() = mIsPaused
 
-    fun getAmplitude(): Pair<Double, Double> {
-        var current = -160.0
-
+    fun getAmplitude(): Float {
         if (mIsRecording) {
-            current = 20 * log10(mRecorder!!.maxAmplitude / 32768.0)
-
-            if (current > mMaxAmplitude) {
-                mMaxAmplitude = current
-            }
+            val amp = runCatching { mRecorder!!.maxAmplitude }.getOrDefault(0)
+            val db = amplitudeToDb(amp)
+            return db
         }
+        return 0f
+    }
 
-        return current to mMaxAmplitude
+    private fun amplitudeToDb(ampl: Int): Float {
+        val norm = ampl / 32767f
+        val clamped = if (norm <= 0f) 1e-6f else norm
+        return (20f * ln(clamped) / ln(10f)).coerceAtMost(0f) // 0 dBFS max
     }
 
     override fun dispose() {
@@ -122,7 +122,6 @@ class MediaRecorder(
         }
 
         updateState(RecordState.STOP)
-        mMaxAmplitude = -160.0
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)

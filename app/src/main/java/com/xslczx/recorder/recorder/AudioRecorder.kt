@@ -129,10 +129,9 @@ class AudioRecorder(private val appContext: Context) : IRecorder, OnAudioRecordL
 
     override fun onPcmData(
         byteArray: ByteArray,
-        shortArray: ShortArray,
         bytesRead: Int
     ) {
-        recorderRecordStreamHandler?.sendPcmEvent(byteArray, shortArray, bytesRead)
+        recorderRecordStreamHandler?.sendPcmEvent(byteArray, bytesRead)
     }
 
     @Suppress("DEPRECATION")
